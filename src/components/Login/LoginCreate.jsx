@@ -4,27 +4,29 @@ import Button from '../Forms/Button'
 import useForm from './../../Hooks/useForm';
 import { USER_POST } from '../../../api';
 import { UserContext } from '../../UserContext';
+import { Link } from 'react-router-dom';
+import stylesDiv from './LoginForm.module.css'
 
 const LoginCreate = () => {
   const username = useForm()
   const email = useForm('email')
   const password = useForm()
 
-  const { userLogin} = React.useContext(UserContext)
+  const { userLogin } = React.useContext(UserContext)
 
   async function handleSubmit(event) {
     event.preventDefault()
-    const { url, options} = USER_POST({
+    const { url, options } = USER_POST({
       username: username.value,
       email: email.value,
       password: password.value,
-    }) 
+    })
     const response = await fetch(url, options)
-    if(response.ok) userLogin(username.value, password.value)
+    if (response.ok) userLogin(username.value, password.value)
   }
 
   return (
-    <section className='animeleft'>
+    <section className='animeLeft'>
       <h1 className='title'>Cadastre-se</h1>
       <form onSubmit={handleSubmit}>
         <Input label="Usuário" type="text" name="username" {...username} />
@@ -32,6 +34,10 @@ const LoginCreate = () => {
         <Input label="Senha" type="password" name="password" {...password} />
         <Button>Cadastrar</Button>
       </form>
+      <div className={stylesDiv.cadastro}>
+        <p>Já possui conta? <Link style={{color: '#fb1', fontWeight: 'bold'}} to="/login">Faça login.</Link></p>
+      </div>
+
     </section>
   )
 }
